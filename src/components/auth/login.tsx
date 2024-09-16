@@ -2,9 +2,25 @@ import { useAuthState } from '@/stores/auth.store'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
 import { Separator } from '../ui/separator'
+import { loginSchema } from '@/lib/form.validation'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Form, useForm } from 'react-hook-form'
+import { z } from "zod"
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 
 const Login = () => {
 	const { setAuth } = useAuthState()
+
+	const form = useForm<z.infer<typeof loginSchema>>({
+		resolver: zodResolver(loginSchema),
+		defaultValues: { email: "", password: '' },
+	})
+
+	function onSubmit(values: z.infer<typeof loginSchema>) {
+		// Do something with the form values.
+		// ✅ This will be type-safe and validated.
+		console.log(values)
+	}
 
 	return (
 		<div className='flex flex-col'>
@@ -19,15 +35,24 @@ const Login = () => {
 				</span>
 			</p>
 			<Separator className='my-3' />
-			<div>
-				<span>Email</span>
-				<Input placeholder='example@gmail.com' />
-			</div>
-			<div className='mt-2'>
-				<span>Password</span>
-				<Input placeholder='*****' type='password' />
-			</div>
-			<Button className='w-full h-12 mt-2'>Login</Button>
+			<Form {...form}>
+				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+					<FormField
+						control={form.control}
+						name="email"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Email address</FormLabel>
+								<FormControl>
+									<Input placeholder="example@gmail.com" type='email' {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<Button type="submit">Submit</Button>
+				</form>
+			</Form>
 		</div>
 	)
 }
