@@ -7,9 +7,19 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { registerSchema } from '@/lib/form.validation'
+import { useState } from 'react'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '@/firebase'
+import { useNavigate } from 'react-router-dom'
+import FillLoading from '../shared/fill-loading'
+import { Alert, AlertDescription, AlertTitle } from '../ui/alert'
+import { CiCircleAlert } from 'react-icons/ci'
 
 const Register = () => {
+	const [isLoading, setIsLoading] = useState(false)
+	const [error, setError] = useState('')
 	const { setAuth } = useAuthState()
+	const navigate = useNavigate()
 
 	const form = useForm<z.infer<typeof registerSchema>>({
 		resolver: zodResolver(registerSchema),
@@ -20,14 +30,23 @@ const Register = () => {
 		},
 	})
 
-	function onSubmit(values: z.infer<typeof registerSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		console.log(values)
-	  }
+	const onSubmit = async(values: z.infer<typeof registerSchema>) => {
+		const {email, password} = values
+		setIsLoading(true)
+		try {
+			const res = await createUserWithEmailAndPassword(auth, email, password)
+			navigate('/')
+		} catch (error) {
+			const result = error as Error
+			setError(result.message)
+		} finally{
+			setIsLoading(false)
+		}
+	}
 
 	return (
 		<div className='flex flex-col'>
+			{isLoading && <FillLoading/>} 
 			<h2 className='text-xl font-bold'>Register</h2>
 			<p className='text-muted-foreground'>
 				Already have an account?{' '}
@@ -39,6 +58,15 @@ const Register = () => {
 				</span>
 			</p>
 			<Separator className='my-3' />
+			{error && <Alert variant="destructive" className='shadow-md flex items-center gap-2'>
+				<CiCircleAlert size={25}/>
+				<div className="">
+				<AlertTitle>Register 🔐</AlertTitle>
+				<AlertDescription>
+					{error.slice(10)}
+				</AlertDescription>
+				</div>
+			</Alert>}
 			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 					<FormField
@@ -48,7 +76,7 @@ const Register = () => {
 							<FormItem>
 								<FormLabel>Email address</FormLabel>
 								<FormControl>
-									<Input placeholder="example@gmail.com" type='email' {...field} />
+									<Input placeholder="example@gmail.com" type='email' disabled={isLoading} {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -62,7 +90,7 @@ const Register = () => {
 								<FormItem>
 									<FormLabel>Password</FormLabel>
 									<FormControl>
-										<Input placeholder="*******" type='password' {...field} />
+										<Input placeholder="*******" type='password' disabled={isLoading} {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -75,14 +103,14 @@ const Register = () => {
 								<FormItem>
 									<FormLabel>Confirm password</FormLabel>
 									<FormControl>
-										<Input placeholder="*******" type='password' {...field} />
+										<Input placeholder="*******" type='password' disabled={isLoading} {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
 							)}
 						/>
 					</div>
-					<Button className='w-full' type="submit">Submit</Button>
+					<Button className='w-full' type="submit" disabled={isLoading}>Submit</Button>
 				</form>
 			</FormProvider>
 		</div>
