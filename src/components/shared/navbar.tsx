@@ -2,8 +2,12 @@ import { navLinks } from '@/constants'
 import { Button } from '../ui/button'
 import { ModeToggle } from './mode-toggle'
 import { Link } from 'react-router-dom'
+import { useUserState } from '@/store/user.store'
 
 const Navbar = () => {
+	const { user } = useUserState()
+	console.log(user);
+	
 	return (
 		<div className='w-full h-[10vh] border-b fixed inset-0 z-50 bg-background'>
 			<div className='container max-w-6xl mx-auto h-full flex justify-between items-center'>
