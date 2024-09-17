@@ -4,7 +4,7 @@ import { Input } from '../ui/input'
 import { Separator } from '../ui/separator'
 import { loginSchema } from '@/lib/form.validation'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Form, useForm } from 'react-hook-form'
+import { Form, FormProvider, useForm } from 'react-hook-form'
 import { z } from "zod"
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form'
 
@@ -35,7 +35,7 @@ const Login = () => {
 				</span>
 			</p>
 			<Separator className='my-3' />
-			<Form {...form}>
+			<FormProvider {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 					<FormField
 						control={form.control}
@@ -50,9 +50,22 @@ const Login = () => {
 							</FormItem>
 						)}
 					/>
-					<Button type="submit">Submit</Button>
+					<FormField
+						control={form.control}
+						name="password"
+						render={({ field }) => (
+							<FormItem>
+								<FormLabel>Password</FormLabel>
+								<FormControl>
+									<Input placeholder="*******" type='password' {...field} />
+								</FormControl>
+								<FormMessage />
+							</FormItem>
+						)}
+					/>
+					<Button className='w-full' type="submit">Submit</Button>
 				</form>
-			</Form>
+			</FormProvider>
 		</div>
 	)
 }
