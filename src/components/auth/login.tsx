@@ -43,7 +43,7 @@ const Login = () => {
 
 	return (
 		<div className='flex flex-col'>
-			{!isloading && <FillLoading/>} 
+			{isloading && <FillLoading/>} 
 			<h2 className='text-xl font-bold'>Login</h2>
 			<p className='text-muted-foreground'>
 				Don't have an account?{' '}
