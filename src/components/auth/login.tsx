@@ -30,8 +30,8 @@ const Login = () => {
 		const {email, password} = values
 		setIsLoading(true)
 		try {
-			
 			const res = await signInWithEmailAndPassword(auth, email, password)
+			console.log(res);			
 			navigate('/')
 		} catch (error) {
 			const result = error as Error

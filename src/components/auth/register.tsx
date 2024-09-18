@@ -35,6 +35,7 @@ const Register = () => {
 		setIsLoading(true)
 		try {
 			const res = await createUserWithEmailAndPassword(auth, email, password)
+			console.log(res);			
 			navigate('/')
 		} catch (error) {
 			const result = error as Error
