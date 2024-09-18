@@ -2,10 +2,24 @@ import men from '@/assets/men.png'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { featuredItems, programs } from '@/constants'
+import { useUserState } from '@/store/user.store'
+import { LogOut } from 'lucide-react'
 import { FaArrowRightLong } from 'react-icons/fa6'
-import { Link } from 'react-router-dom'
+import {CgGym} from 'react-icons/cg'
+import { Link, useNavigate } from 'react-router-dom'
+import { auth } from '@/firebase'
 
 const Home = () => {
+	const {user, setUser} = useUserState()
+	const navigate = useNavigate()
+
+	const onLogOut = () => {
+		auth.signOut().then(()=>{
+			setUser(null)
+			navigate('/')
+		})
+	}
+
 	return (
 		<>
 			<div className='w-full h-screen flex items-center'>
@@ -15,11 +29,26 @@ const Home = () => {
 						A huge selection of health and fitness content, healthy recipes and
 						transformation stories to help you get fit and stay fit!
 					</p>
-					<Link to={'/auth'}>
-						<Button className='w-fit mt-6 font-bold h-12' size={'lg'}>
-							Join club now
-						</Button>
-					</Link>
+					{
+						user ? <div className="flex gap-x-4">
+							<Link to={'/gym'}>
+								<Button className='w-fit mt-6 font-bold h-12 space-x-3' size={'lg'}>
+									<CgGym size={20}/>
+									<span>Go to Gym</span>
+								</Button>
+							</Link>
+							<Button onClick={onLogOut} className='w-fit mt-6 space-x-2 font-bold h-12 bg-destructive hover:bg-red-600' size={'lg'}>
+								<LogOut className='w-5'/>
+								<span>Log Out</span>
+							</Button>
+						</div> :
+						<Link to={'/auth'}>
+							<Button className='w-fit mt-6 font-bold h-12' size={'lg'}>
+								Join club now
+							</Button>
+						</Link>
+					}
+
 
 					<div className='mt-24'>
 						<p className='text-muted-foreground'>AS FEATURED IN</p>
