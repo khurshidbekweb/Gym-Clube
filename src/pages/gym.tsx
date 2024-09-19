@@ -1,19 +1,40 @@
 import TaskItem from '@/components/shared/task-item'
 import { Button } from '@/components/ui/button'
+import { Dialog, DialogHeader, DialogContent, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator'
+import { db } from '@/firebase';
 import TaskForm from '@/forms/task-form';
+import { taskSchema } from '@/lib/form.validation';
+import { useUserState } from '@/store/user.store';
+import { addDoc, collection } from 'firebase/firestore';
+import { BadgePlus } from 'lucide-react';
+import { useState } from 'react';
+import { z } from 'zod';
 
 
 const Gym = () => {
+    const [open, setOpen] = useState(false)
+	const {user} = useUserState()
+	const onAdd = async ({title}: z.infer<typeof taskSchema>) => {
+		return addDoc(collection(db,'task'), {
+			title,
+			status: 'usstarted',
+			startTime: null,
+			endTime: null,
+			userId: user?.uid
+		}).then(() => setOpen(false))
+	}
+
     return (
+		<>
         <div className='h-screen max-w-6xl mx-auto flex items-center'>
 			<div className='grid grid-cols-2 w-full gap-8 items-center'>
 				<div className='flex flex-col space-y-3'>
 					<div className='w-full p-4 rounded-md flex justify-between bg-gradient-to-t from-background to-secondary'>
 						<div className='text-2xl font-bold'>Trainings</div>
-						<Button size={'icon'}>
-							<TaskForm/>
-						</Button>
+						<Button size={'icon'} onClick = {() => setOpen(true)}>
+							<BadgePlus size={20} />
+						</Button>						
 					</div>
 					<Separator />
 					<div className='w-full p-4 rounded-md flex justify-between bg-gradient-to-b from-background to-secondary relative min-h-60'>
@@ -41,6 +62,16 @@ const Gym = () => {
 				</div>
 			</div>
 		</div>
+				<Dialog open={open} onOpenChange={setOpen}>
+					<DialogTrigger></DialogTrigger>
+					<DialogContent>
+						<DialogHeader>
+							<DialogTitle className='mb-1'>Create a new task !</DialogTitle>
+							<TaskForm handler={onAdd}/>
+						</DialogHeader>
+					</DialogContent>
+				</Dialog>
+		</>
     );
 };
 
