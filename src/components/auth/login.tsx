@@ -14,10 +14,12 @@ import { auth } from '@/firebase'
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert'
 import { CiCircleAlert  } from 'react-icons/ci'
 import FillLoading from '../shared/fill-loading'
+import { useUserState } from '@/store/user.store'
 
 const Login = () => {
 	const [isloading, setIsLoading] = useState(false)
 	const [error, setError] = useState('')
+	const {setUser} = useUserState()
 	const navigate = useNavigate()
 	const { setAuth } = useAuthState()
 
@@ -31,7 +33,7 @@ const Login = () => {
 		setIsLoading(true)
 		try {
 			const res = await signInWithEmailAndPassword(auth, email, password)
-			console.log(res);			
+			setUser(res.user)		
 			navigate('/')
 		} catch (error) {
 			const result = error as Error

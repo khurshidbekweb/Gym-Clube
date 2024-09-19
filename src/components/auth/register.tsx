@@ -14,10 +14,12 @@ import { useNavigate } from 'react-router-dom'
 import FillLoading from '../shared/fill-loading'
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert'
 import { CiCircleAlert } from 'react-icons/ci'
+import { useUserState } from '@/store/user.store'
 
 const Register = () => {
 	const [isLoading, setIsLoading] = useState(false)
 	const [error, setError] = useState('')
+	const {setUser} = useUserState()
 	const { setAuth } = useAuthState()
 	const navigate = useNavigate()
 
@@ -35,7 +37,7 @@ const Register = () => {
 		setIsLoading(true)
 		try {
 			const res = await createUserWithEmailAndPassword(auth, email, password)
-			console.log(res);			
+			setUser(res.user)		
 			navigate('/')
 		} catch (error) {
 			const result = error as Error

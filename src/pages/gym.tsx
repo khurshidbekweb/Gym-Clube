@@ -1,7 +1,7 @@
 import TaskItem from '@/components/shared/task-item'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { BadgePlus } from 'lucide-react'
+import TaskForm from '@/forms/task-form';
 
 
 const Gym = () => {
@@ -12,7 +12,7 @@ const Gym = () => {
 					<div className='w-full p-4 rounded-md flex justify-between bg-gradient-to-t from-background to-secondary'>
 						<div className='text-2xl font-bold'>Trainings</div>
 						<Button size={'icon'}>
-							<BadgePlus />
+							<TaskForm/>
 						</Button>
 					</div>
 					<Separator />

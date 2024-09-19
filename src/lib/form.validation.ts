@@ -12,3 +12,7 @@ export const registerSchema = z.object({
     message: "Password do not mutch",
     path: ['confirmPassword']
 })
+
+export const taskSchema = z.object({
+    title: z.string().min(5)
+})
