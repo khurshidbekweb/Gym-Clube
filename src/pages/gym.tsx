@@ -32,7 +32,7 @@ const Gym = () => {
 	const onAdd = async ({ title }: z.infer<typeof taskSchema>) => {
 		return addDoc(collection(db, 'task'), {
 			title,
-			status: 'usstarted',
+			status: 'unstarted',
 			startTime: null,
 			endTime: null,
 			userId: user?.uid
@@ -83,7 +83,7 @@ const Gym = () => {
 							{data && (
 								<div className='flex flex-col space-y-3 w-full'>
 									{!editing && data.tasks.map((task) => (
-										<TaskItem task={task} onDeleted={() => onDeleted(task.id)} isEditing={() => onStartEditing(task)} key={task.id} />
+										<TaskItem task={task} refetch={refetch} onDeleted={() => onDeleted(task.id)} isEditing={() => onStartEditing(task)} key={task.id} />
 									))}
 									{editing && <TaskForm
 										title={current?.title}
