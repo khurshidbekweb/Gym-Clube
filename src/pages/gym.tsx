@@ -102,11 +102,11 @@ const Gym = () => {
 							<div className='text-3xl font-bold'>02:08:47</div>
 						</div>
 						<div className='p-4 rounded-md bg-gradient-to-r from-secondary to-background relative h-24'>
-							<div className='text-2xl font-bold'>Total week</div>
+							<div className='text-2xl font-bold'>Total month</div>
 							<div className='text-3xl font-bold'>02:08:47</div>
 						</div>
 						<div className='p-4 rounded-md bg-gradient-to-r from-destructive to-background relative h-24'>
-							<div className='text-2xl font-bold'>Total week</div>
+							<div className='text-2xl font-bold'>Total time</div>
 							<div className='text-3xl font-bold'>02:08:47</div>
 						</div>
 					</div>
