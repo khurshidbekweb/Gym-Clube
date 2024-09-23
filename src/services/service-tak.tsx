@@ -1,6 +1,6 @@
-import { db } from "@/firebase"
+import { auth, db } from "@/firebase"
 import { ITask, ITaskData } from "@/types"
-import { collection, getDocs, query } from "firebase/firestore"
+import { collection, getDocs, query, where } from "firebase/firestore"
 import {endOfMonth, endOfWeek, isWithinInterval, startOfMonth, startOfWeek} from 'date-fns'
 
 
@@ -10,7 +10,7 @@ export const ServiceTask = {
         let total = 0
         let weekTotal = 0
 
-        const q = query(collection(db, 'task'))
+        const q = query(collection(db, 'task'), where('userId', '==', auth.currentUser?.uid))
         const querySnapshot = await getDocs(q)
 
         const now = new Date()
