@@ -10,6 +10,7 @@ import { ServiceTask } from '@/services/service-tak';
 import { useUserState } from '@/store/user.store';
 import { ITask } from '@/types';
 import { useQuery } from '@tanstack/react-query';
+import { addMilliseconds, addMinutes, format } from 'date-fns';
 import { addDoc, collection, deleteDoc, doc, updateDoc } from 'firebase/firestore';
 import { BadgePlus } from 'lucide-react';
 import { useState } from 'react';
@@ -65,6 +66,13 @@ const Gym = () => {
 		setCurrent(task)
 	}
 
+	const formatTime = (time: number) => {
+		const date = addMilliseconds(new Date(0), time)
+		const formatDate = format(addMinutes(date, date.getTimezoneOffset()), 'HH:mm:ss')
+
+		return formatDate
+	}
+
 
 	return (
 		<>
@@ -99,15 +107,21 @@ const Gym = () => {
 					<div className='flex flex-col space-y-3 w-full'>
 						<div className='p-4 rounded-md bg-gradient-to-r from-blue-900 to-background relative h-24'>
 							<div className='text-2xl font-bold'>Total week</div>
-							<div className='text-3xl font-bold'>02:08:47</div>
+							{isPending ? <FillLoading /> : data && <>
+								<div className='text-3xl font-bold'>{formatTime(data.weekTotal)}</div>
+							</>}
 						</div>
 						<div className='p-4 rounded-md bg-gradient-to-r from-secondary to-background relative h-24'>
 							<div className='text-2xl font-bold'>Total month</div>
-							<div className='text-3xl font-bold'>02:08:47</div>
+							{isPending ? <FillLoading /> : data && <>
+								<div className='text-3xl font-bold'>{formatTime(data.monthTotal)}</div>
+							</>}
 						</div>
 						<div className='p-4 rounded-md bg-gradient-to-r from-destructive to-background relative h-24'>
 							<div className='text-2xl font-bold'>Total time</div>
-							<div className='text-3xl font-bold'>02:08:47</div>
+							{isPending ? <FillLoading /> : data && <>
+								<div className='text-3xl font-bold'>{formatTime(data.total)}</div>
+							</>}
 						</div>
 					</div>
 				</div>
