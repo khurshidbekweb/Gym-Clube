@@ -44,7 +44,7 @@ const Gym = () => {
 	}
 
 	const onUpdate = async ({ title }: z.infer<typeof taskSchema>) => {
-		return updateDoc(doc(db, 'task', current?.id), { title }).then(() => {
+		return current && updateDoc(doc(db, 'task', current?.id), { title }).then(() => {
 			setOpen(false)
 			refetch()
 		}).finally(() => setEditing(false))
@@ -76,8 +76,8 @@ const Gym = () => {
 
 	return (
 		<>
-			<div className='h-screen max-w-6xl mx-auto flex items-center'>
-				<div className='grid grid-cols-2 w-full gap-8 items-center'>
+			<div className='h-screen max-w-6xl mx-auto flex items-center px-5'>
+				<div className='grid lg:grid-cols-2 md:grid-cols-1 w-full gap-8 items-center'>
 					<div className='flex flex-col space-y-3'>
 						<div className='w-full p-4 rounded-md flex justify-between bg-gradient-to-t from-background to-secondary'>
 							<div className='text-2xl font-bold'>Trainings</div>

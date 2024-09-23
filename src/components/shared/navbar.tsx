@@ -7,6 +7,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { DropdownMenuGroup } from "../ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import {CgGym} from 'react-icons/cg'
+import {IoFitness} from 'react-icons/io5'
+import {IoMdFitness} from 'react-icons/io'
 import { LogOut } from 'lucide-react'
 import { auth } from '@/firebase'
 
@@ -22,9 +24,9 @@ const Navbar = () => {
 	}
 	
 	return (
-		<div className='w-full h-[10vh] border-b fixed inset-0 z-50 bg-background'>
+		<div className='lg:w-[102vw] h-[10vh] border-b fixed inset-0 z-50 bg-background'>
 			<div className='container max-w-6xl mx-auto h-full flex justify-between items-center'>
-				<Link to={'/'}><h1 className='text-2xl font-bold uppercase'>workout</h1></Link>
+				<Link to={'/'}><h1 className='text-2xl font-bold uppercase flex items-center'><IoFitness size={25}/><span className='text-red-600 text-[35px]'>/</span><IoMdFitness size={25}/></h1></Link>
 				<div className='flex items-center gap-3'>
 					{navLinks.map(nav => (
 						<a

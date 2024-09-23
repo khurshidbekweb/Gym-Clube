@@ -46,7 +46,7 @@ const TaskItem = ({task, isEditing, onDeleted, refetch}:Props) => {
 		setIsLoading(true)
 		try {
 			const elepsed = task.startTime ? Date.now() - task.startTime : 0
-			const totalTime = (task.totalTime || 0 + elepsed) 
+			const totalTime = (task.totalTime || 0) + elepsed 
 			await updateDoc(ref, {
 				status: 'paused',
 				startTime: Date.now(),
@@ -73,7 +73,7 @@ const TaskItem = ({task, isEditing, onDeleted, refetch}:Props) => {
 				<HiStatusOnline />
 				<span className='capitalize text-sm'>{task.status}</span>
 			</div>
-			<div className='flex gap-1 items-center justify-self-end'>
+			<div className='flex  gap-1 items-center justify-self-end'>
 					{ButtonAction()}
 				<Button variant={'secondary'} size={'icon'} className='w-8 h-8' onClick={isEditing}>
 					<Edit2 className='w-5 h-5' />
