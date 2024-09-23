@@ -13,7 +13,6 @@ import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '@/firebase'
 import FillLoading from './fill-loading'
 import { QueryObserverResult } from '@tanstack/react-query'
-import { log } from 'console'
 
 interface Props {
 	task: ITask,
@@ -95,7 +94,7 @@ function ButtonAction() {
 					
 		case "paused":
 			return(
-				<Button variant={'ghost'} size={'icon'} className='w-8 h-8'>
+				<Button variant={'ghost'} size={'icon'} className='w-8 h-8' onClick={onStart}>
 						<RxReload  className='w-5 h-5 text-indigo-500' />
 					</Button>
 		)
